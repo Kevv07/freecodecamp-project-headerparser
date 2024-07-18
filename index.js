@@ -24,6 +24,25 @@ app.get('/api/hello', function (req, res) {
   res.json({ greeting: 'hello API' });
 });
 
+// - - START - -
+//require useragent middleware and initialize it
+const useragent = require('express-useragent');
+app.use(useragent.express());
+
+app.get('/api/whoami', function (req, res) {
+  let ip = req.ip;
+  let lenguage = req.headers['accept-language'];
+  let userDetails = req.useragent;
+  
+  res.json({
+    ipaddress: ip,
+    language: lenguage,
+    software: userDetails.source
+  });  // userDetails.source retrieves browser/operative system information
+
+});
+
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT || 3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
